@@ -9,6 +9,31 @@ screenshots folder, OCRs each capture with a Star-Citizen-tuned Tesseract model,
 extracts the terminal, buy/sell type, and each commodity's stock/quantity/price,
 and lets you review, correct, and submit to [UEX](https://uexcorp.space).
 
+## Download & run (Windows)
+
+1. Go to the [**Releases**](../../releases) page and download **`rUEXDataRunner.zip`**
+   from the latest release. (No Release yet? Download the artifact from the latest
+   [**Actions**](../../actions) run instead.)
+2. **Unblock** it: right-click the zip → **Properties** → tick **Unblock** → **OK**.
+   (Skips Windows' "downloaded from the internet" warnings on the extracted files.)
+3. **Extract**: right-click the zip → **Extract All…** → pick a folder you can write
+   to (e.g. `Documents`).
+4. Open the extracted `rUEXDataRunner` folder and double-click **`ruex-datarunner.exe`**.
+   Optionally right-click it → **Send to → Desktop (create shortcut)**.
+5. First launch may show **"Windows protected your PC"** (the app is unsigned) —
+   click **More info → Run anyway**. This is expected for a small unsigned app; it's
+   a publisher-reputation prompt, not a virus warning.
+
+The zip is **self-contained** (the OCR engine and model are bundled — nothing else
+to install) and **portable**: your settings, saved reports, pending captures, and
+trade log are stored *inside the folder* (`config\` and `data\`). Move the folder
+and your data comes with it; to uninstall, delete the folder.
+
+To submit to UEX (optional — the app runs and OCRs without it), open **Settings**
+and add your **UEX Secret Key** (from your UEX account page) and a **UEX App API
+Token** (create an app at [uexcorp.space/api/apps](https://uexcorp.space/api/apps)).
+Submissions default to **dry-run** (nothing is sent) until you turn that off.
+
 ## What's new vs. the original
 
 **Saved reports with in-app updates.** Every submission is saved locally with its
