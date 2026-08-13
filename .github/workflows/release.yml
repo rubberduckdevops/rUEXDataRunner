@@ -1,0 +1,71 @@
+name: Build & Release (Windows portable)
+
+# Build the self-contained portable zip. Every run uploads it as a downloadable
+# workflow artifact; pushing a version tag (e.g. v0.1.0) also publishes it as a
+# GitHub Release that people can download.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write # needed to create a Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Tesseract (bundled into the package)
+        run: choco install tesseract -y --no-progress
+
+      - name: Test
+        run: cargo test --workspace --release
+        # The end-to-end OCR test auto-skips when RUEX_TESSERACT is unset.
+
+      - name: Build & assemble portable folder
+        shell: bash
+        run: |
+          export TESS_SRC="/c/Program Files/Tesseract-OCR"
+          bash scripts/build_portable.sh
+
+      - name: Verify bundled Tesseract loads
+        shell: bash
+        run: |
+          "dist/rUEXDataRunner/Tesseract-OCR/tesseract.exe" --version | head -2
+
+      - name: Zip
+        shell: pwsh
+        run: Compress-Archive -Path dist/rUEXDataRunner -DestinationPath dist/rUEXDataRunner.zip -Force
+
+      - name: Upload artifact (downloadable from the run page)
+        uses: actions/upload-artifact@v4
+        with:
+          name: rUEXDataRunner-windows-portable
+          path: dist/rUEXDataRunner.zip
+
+      - name: Publish GitHub Release (on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/rUEXDataRunner.zip
+          generate_release_notes: true
+          body: |
+            **rUEXDataRunner — Windows portable build**
+
+            Download `rUEXDataRunner.zip` below, then:
+            1. Right-click the zip → **Properties** → tick **Unblock** → **OK**.
+            2. Right-click → **Extract All…** to a folder (e.g. Documents).
+            3. Open the folder and run **ruex-datarunner.exe**.
+            4. If Windows SmartScreen appears (the app is unsigned): **More info → Run anyway**.
+
+            The zip is self-contained — the OCR engine and model are included. Your
+            settings and history are stored inside the folder (portable).
