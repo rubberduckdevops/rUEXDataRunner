@@ -1,0 +1,33 @@
+# --- Rust build artifacts ---
+/target/
+**/*.rs.bk
+
+# Keep Cargo.lock committed (this workspace ships binaries).
+
+# --- Generated portable package (built by scripts/build_portable.sh) ---
+/dist/
+
+# --- Runtime data / settings (created at run time; never source) ---
+# Portable mode writes these next to the exe; dev runs write to %APPDATA%.
+/config/
+/data/
+/portable.txt
+config.json
+reports.json
+pending.json
+trades.json
+
+# --- Logs & temp ---
+*.log
+app.log*
+
+# --- IDE / editor ---
+/.idea/
+/.vscode/
+*.iml
+*.code-workspace
+
+# --- OS cruft ---
+Thumbs.db
+Desktop.ini
+.DS_Store

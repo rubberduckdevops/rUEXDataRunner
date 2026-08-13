@@ -1,0 +1,28 @@
+[package]
+name = "datarunner-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "datarunner_core"
+path = "src/lib.rs"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+regex.workspace = true
+strsim.workspace = true
+chrono.workspace = true
+image.workspace = true
+imageproc = "0.25"
+base64.workspace = true
+directories.workspace = true
+log.workspace = true
+ureq = { version = "2", features = ["json", "tls"], default-features = false }
+notify = "6"
+
+[dev-dependencies]
+env_logger.workspace = true

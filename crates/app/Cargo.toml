@@ -1,0 +1,23 @@
+[package]
+name = "ruex-datarunner"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "ruex-datarunner"
+path = "src/main.rs"
+
+[dependencies]
+datarunner-core = { path = "../core" }
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+chrono.workspace = true
+log.workspace = true
+env_logger.workspace = true
+image.workspace = true
+directories.workspace = true
+eframe = { version = "0.29", default-features = true }
+egui = "0.29"
+rfd = "0.14"
